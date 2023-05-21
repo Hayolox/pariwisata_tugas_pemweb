@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1045197975827",
+    "project_id": "pemweb-d32fa",
+    "storage_bucket": "pemweb-d32fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045197975827:android:4761cb2cb3fe461363aae6",
+        "android_client_info": {
+          "package_name": "com.example.pariwisata_kita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045197975827-8knaoen842gkid9rq8s14fkev81l3p6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHSvamSIZrtGo9EoV324-gQ4fs_fO9IEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045197975827-8knaoen842gkid9rq8s14fkev81l3p6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
