@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme.dart';
+import 'auth_view_model.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -132,6 +133,9 @@ class SignInPage extends StatelessWidget {
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+                      final viewModel =
+                          Provider.of<AuthViewModel>(context, listen: false);
+                      viewModel.signIn(emailC.text, passC.text, context);
                       emailC.clear();
                       passC.clear();
                     }
