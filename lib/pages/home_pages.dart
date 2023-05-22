@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pariwisata_kita/auth/signIn_page.dart';
@@ -9,6 +10,7 @@ import 'package:pariwisata_kita/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../auth/auth_view_model.dart';
+import '../model/detail_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key});
@@ -85,36 +87,86 @@ class HomePage extends StatelessWidget {
                   stream: value.getDataHome(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
+                      var listAllDataDocs = snapshot.data!.docs;
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data!.docs.length,
+                        itemCount: listAllDataDocs.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: GestureDetector(
+                              onLongPress: () {
+                                AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.info,
+                                        animType: AnimType.rightSlide,
+                                        title: 'KONFIRMASI',
+                                        desc: 'Yakin Untuk Menghapus Data Ini?',
+                                        btnOkOnPress: () {
+                                          value.deleteData(
+                                              listAllDataDocs[index].id,
+                                              context);
+                                        },
+                                        btnCancelOnPress: () {})
+                                    .show();
+                              },
                               onDoubleTap: () {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) {
-                                    return EditPages();
-                                  },
-                                ));
+                               Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return EditPages();
+                                      },
+                                      settings: RouteSettings(
+                                          arguments: DetailModel(
+                                              name:
+                                                  (listAllDataDocs[index].data()
+                                                      as Map<String,
+                                                          dynamic>)['nama'],
+                                              imageUrl: (listAllDataDocs[index]
+                                                          .data()
+                                                      as Map<String, dynamic>)[
+                                                  'image_url'],
+                                              address: (listAllDataDocs[index]
+                                                      .data()
+                                                  as Map<String, dynamic>)['alamat'],
+                                              description: (listAllDataDocs[index].data() as Map<String, dynamic>)['deskripsi'], documentId:   listAllDataDocs[index].id),),
+                                    ));
                               },
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) {
-                                    return const DetailPages();
-                                  },
-                                ));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const DetailPages();
+                                      },
+                                      settings: RouteSettings(
+                                          arguments: DetailModel(
+                                              name:
+                                                  (listAllDataDocs[index].data()
+                                                      as Map<String,
+                                                          dynamic>)['nama'],
+                                              imageUrl: (listAllDataDocs[index]
+                                                          .data()
+                                                      as Map<String, dynamic>)[
+                                                  'image_url'],
+                                              address: (listAllDataDocs[index]
+                                                      .data()
+                                                  as Map<String, dynamic>)['alamat'],
+                                              description: (listAllDataDocs[index].data() as Map<String, dynamic>)['deskripsi'], documentId:   listAllDataDocs[index].id),),
+                                    ));
                               },
                               child: ListTile(
                                 leading: Image.network(
-                                  'https://firebasestorage.googleapis.com/v0/b/pemweb-d32fa.appspot.com/o/kahayan.jpeg?alt=media&token=ea2b88ff-19ad-4963-9e83-05b3d3bc575b',
+                                  (listAllDataDocs[index].data()
+                                      as Map<String, dynamic>)['image_url'],
                                   height: 100,
                                   width: 66,
                                 ),
                                 title: Text(
-                                  'Jembatan Kahayan',
+                                  (listAllDataDocs[index].data()
+                                      as Map<String, dynamic>)['nama'],
                                   style: primaryTextStyle.copyWith(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -122,17 +174,18 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ),
                                 subtitle: Row(
-                                  children: const [
-                                    Icon(
+                                  children: [
+                                    const Icon(
                                       Icons.location_on,
                                       color: Color(0xff4C4DDC),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 6,
                                     ),
                                     Expanded(
                                       child: Text(
-                                          'Alice Springs NT 0870, Australia',
+                                          (listAllDataDocs[index].data() as Map<
+                                              String, dynamic>)['alamat'],
                                           maxLines: 2,
                                           overflow: TextOverflow.clip),
                                     )

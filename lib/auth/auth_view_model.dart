@@ -10,15 +10,6 @@ class AuthViewModel extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   late Widget widgetNow = SignInPage();
 
-  void checkLogin() {
-    auth.authStateChanges().listen((User? user) {
-      if (user != null) {
-        widgetNow = const HomePage();
-        notifyListeners();
-      }
-    });
-  }
-
   void signIn(String email, String password, BuildContext context) async {
     try {
       UserCredential userCredential =

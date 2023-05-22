@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:pariwisata_kita/model/detail_model.dart';
 import 'package:readmore/readmore.dart';
 
 import '../theme.dart';
@@ -10,6 +11,7 @@ class DetailPages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as DetailModel?;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -38,6 +40,18 @@ class DetailPages extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
+              Center(
+                child: Text(
+                  args!.name,
+                  style: primaryTextStyle.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
               Container(
                 height: 246,
                 width: double.infinity,
@@ -47,8 +61,8 @@ class DetailPages extends StatelessWidget {
                     Radius.circular(8),
                   ),
                 ),
-                child: Image.asset(
-                  'assets/logo.png',
+                child: Image.network(
+                  args.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -56,16 +70,16 @@ class DetailPages extends StatelessWidget {
                 height: 6,
               ),
               Row(
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.location_on,
                     color: Color(0xff4C4DDC),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
                   Expanded(
-                    child: Text('Alice Springs NT 0870, Australia',
+                    child: Text(args.address,
                         maxLines: 2, overflow: TextOverflow.clip),
                   )
                 ],
@@ -83,14 +97,15 @@ class DetailPages extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              const ReadMoreText(
-                'Flutter is Google’s mobile UI open source framework to build high-quality native (super fast) interfaces for iOS and Android apps with the unified codebase.',
+              ReadMoreText(
+                args.description,
                 trimLines: 4,
                 colorClickableText: Colors.pink,
                 trimMode: TrimMode.Line,
                 trimCollapsedText: 'Show more',
                 trimExpandedText: 'Show less',
-                moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                moreStyle:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
             ],
           ),

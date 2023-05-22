@@ -1,19 +1,28 @@
 // ignore_for_file: file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:pariwisata_kita/pages/pages_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../theme.dart';
+import '../auth/auth_view_model.dart';
+import '../model/detail_model.dart';
 
 class EditPages extends StatelessWidget {
   EditPages({super.key});
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController nameTouristC = TextEditingController();
-  TextEditingController imageUrlC = TextEditingController();
-  TextEditingController addressC = TextEditingController();
-  TextEditingController descriptionC = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as DetailModel?;
+    final pagesViewModel = Provider.of<PagesViewModel>(context, listen: false);
+    TextEditingController nameTouristC =
+        TextEditingController(text: args!.name);
+    TextEditingController imageUrlC =
+        TextEditingController(text: args.imageUrl);
+    TextEditingController addressC = TextEditingController(text: args.address);
+    TextEditingController descriptionC =
+        TextEditingController(text: args.description);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -116,7 +125,7 @@ class EditPages extends StatelessWidget {
                       height: 18,
                     ),
                     TextFormField(
-                      controller: nameTouristC,
+                      controller: addressC,
                       textInputAction: TextInputAction.next,
                       style: const TextStyle(color: Colors.grey),
                       decoration: InputDecoration(
@@ -185,8 +194,14 @@ class EditPages extends StatelessWidget {
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          nameTouristC.clear();
-                          addressC.clear();
+                          pagesViewModel.editData(
+                              DetailModel(
+                                  name: nameTouristC.text,
+                                  imageUrl: imageUrlC.text,
+                                  address: addressC.text,
+                                  description: descriptionC.text,
+                                  documentId: args.documentId),
+                              context);
                         }
                       },
                       child: Container(

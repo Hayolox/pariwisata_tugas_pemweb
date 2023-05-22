@@ -1,8 +1,11 @@
 // ignore_for_file: file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:pariwisata_kita/pages/pages_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../theme.dart';
+import '../auth/auth_view_model.dart';
 
 class AddPages extends StatelessWidget {
   AddPages({super.key});
@@ -116,7 +119,7 @@ class AddPages extends StatelessWidget {
                       height: 18,
                     ),
                     TextFormField(
-                      controller: nameTouristC,
+                      controller: addressC,
                       textInputAction: TextInputAction.next,
                       style: const TextStyle(color: Colors.grey),
                       decoration: InputDecoration(
@@ -182,11 +185,23 @@ class AddPages extends StatelessWidget {
                       height: 18,
                     ),
                     GestureDetector(
-                      onTap: () async {
+                      onTap: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
+                          final pagesViewModel = Provider.of<PagesViewModel>(
+                              context,
+                              listen: false);
+                          pagesViewModel.addData(
+                            nameTouristC.text,
+                            imageUrlC.text,
+                            addressC.text,
+                            descriptionC.text,
+                            context,
+                          );
                           nameTouristC.clear();
+                          imageUrlC.clear();
                           addressC.clear();
+                          descriptionC.clear();
                         }
                       },
                       child: Container(
