@@ -51,6 +51,7 @@ class PagesViewModel extends ChangeNotifier {
   }
 
   void deleteData(String documentId, BuildContext context) {
+    // Mendapatkan referensi dokumen yang ingin delete
     db
         .collection('data_pariwisata')
         .doc(documentId)
